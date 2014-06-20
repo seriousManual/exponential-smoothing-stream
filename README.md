@@ -127,3 +127,29 @@ InitialStrategyCustom.prototype.determine = function (value) {
     return value;
 };
 ````
+
+### Smoothing Factor
+
+It is tricky to determine exactly which smoothing factor is the best fitting factor. 
+To get a rough idea on how the smoothing factor effects the smoothed series this table can be used:
+
+On each row a certain smoothing factor is listed, the belonging columns show how many steps it takes until only a certain percentag of the initial value is left.
+
+factor | 10% |	25% |	50% |	75% |	90%
+:---|:---:|:---:|:---:|:---:|:---:
+0,75 | 8 | 5 | 3 | 1	
+0,8 | 10 | 6 | 3 | 1	
+0,85 | 14 | 8 | 4 | 2 | 1
+0,9 | 21 | 13 | 7 | 3 | 1
+0,93 | 31 | 19 | 9 | 4 | 1
+0,95 | 44 | 27 | 13 | 6 | 2
+0,96 | 56 | 34 | 17 | 7 | 2
+0,97 | 75 | 45 | 23 | 9 | 3
+0,98 | 98 | 68 | 34 | 14 | 5
+0,985 | 150 | 91 | 45 | 19 | 7
+0,987 | 175 | 109 | 53 | 22 | 8
+0,989 | 199 | 119 | 60 | 25 | 9
+0,99 | 228 | 138 | 69 | 29 | 10
+0,993 | 327 | 197 | 99 | 41 | 14
+0,995 | 449 | 277 | 139 | 58 | 21
+0,997 | 766 | 460 | 230 | 95 | 33
