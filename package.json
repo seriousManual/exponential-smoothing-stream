@@ -1,0 +1,27 @@
+{
+  "name": "exponential-smoothing-stream",
+  "description": "A transformer stream that applies the exponential smoothing algorithm on each passed item",
+  "version": "0.0.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/zaphod1984/exponential-smoothing-stream.git"
+  },
+  "license": "MIT",
+  "author": "Manuel Ernst <zaphod84@gmx.de>",
+  "devDependencies": {
+    "mocha": "^1.19.0",
+    "chai": "^1.9.1"
+  },
+  "files": [
+    "index.js"
+  ],
+  "main": "./index.js",
+  "keywords": [
+    "exponential smoothing",
+    "statistics",
+    "stream"
+  ],
+  "scripts": {
+    "test": "./node_modules/mocha/bin/mocha tests"
+  }
+}
