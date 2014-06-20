@@ -29,6 +29,28 @@ describe('exponential-smoothing-stream', function() {
                 done();
             });
         });
+
+        it('should emit an error', function(done) {
+            var a = new ESS();
+
+            var valueList = [];
+
+            a.on('data', function(data) {
+                valueList.push(data);
+            });
+
+            a.on('end', function() {
+                expect(true).to.be.false;
+            });
+
+            a.on('error', function() {
+                expect(valueList).to.deep.equal([]);
+                done();
+            });
+
+            a.write('foobar');
+            a.end();
+        });
     });
 
     describe('initial strategies', function() {
