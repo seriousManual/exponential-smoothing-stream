@@ -10,7 +10,6 @@ function ExponentialSmoothingStream (options) {
 
     this._smoothingFactor = options.smoothingFactor || 1;
     this._initialStrategy = options.initialStrategy || new strategies.InitialStrategyFirst;
-    this._first = true;
     this._currentValue = null;
 }
 
@@ -21,8 +20,7 @@ ExponentialSmoothingStream.prototype._transform = function (streamValue, enc, ca
         return this.emit('error', new Error('not a number: ' + streamValue));
     }
 
-    if (this._first) {
-        this._first = false;
+    if (this._currentValue === null) {
         this._currentValue = this._initialStrategy.determine(streamValue);
     }
 
