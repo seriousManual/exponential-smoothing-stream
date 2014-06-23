@@ -60,7 +60,7 @@ Creates a new exponential-smoothing-stream.
 Takes an optional configuration hash that consists of the following elements:
 
 * `smoothingFactor`: Defines the smoothing factor
-* `initialStrategy`: Defines the strategy that is used to determine the initial value of the series
+* `initialStrategy`: Defines the strategy that is used to determine the initial value of the series, defaults to the `First` strategy
 
 ### Initial Strategy
 
