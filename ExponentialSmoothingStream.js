@@ -9,7 +9,7 @@ function ExponentialSmoothingStream (options) {
     options = options || {};
 
     this._smoothingFactor = options.smoothingFactor || 1;
-    this._initialStrategy = options.initialStrategy || new strategies.InitialStrategyFirst;
+    this._initialStrategy = options.initialStrategy || new strategies.InitialStrategyFirst();
     this._currentValue = null;
 }
 
