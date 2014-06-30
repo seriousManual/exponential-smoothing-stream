@@ -31,6 +31,14 @@ ExponentialSmoothingStream.prototype._transform = function (streamValue, enc, ca
     callback();
 };
 
+ExponentialSmoothingStream.prototype._flush = function(callback) {
+    if (this._queue.length > 0) {
+        return this.emit('error', new Error('there are ' + this._queue.length + ' values left in the queue, nevertheless the stream has ended'))
+    }
+
+    callback();
+};
+
 ExponentialSmoothingStream.prototype._invokeInitialStrategy = function (streamValue) {
     var strategyOutput = this._initialStrategy.determine(streamValue);
 
@@ -41,6 +49,7 @@ ExponentialSmoothingStream.prototype._invokeInitialStrategy = function (streamVa
         this.push(strategyOutput);
 
         this._queue.forEach(this._applyStreamValue.bind(this));
+        this._queue.length = 0;
     }
 };
 

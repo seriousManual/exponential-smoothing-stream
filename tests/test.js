@@ -7,8 +7,14 @@ function BufferingStrategy() {
     this._i = 0;
 }
 
-BufferingStrategy.prototype.determine = function(value) {
+BufferingStrategy.prototype.determine = function (value) {
     return this._i++ < 2 ? null : 1;
+};
+
+function BlackHoleStrategy() {
+}
+BlackHoleStrategy.prototype.determine = function () {
+    return null;
 };
 
 describe('exponential-smoothing-stream', function () {
@@ -64,7 +70,7 @@ describe('exponential-smoothing-stream', function () {
             });
         });
 
-        it('should emit an error', function (done) {
+        it('should emit an error on invalid data', function (done) {
             var a = new ESS();
 
             var valueList = [];
@@ -77,12 +83,44 @@ describe('exponential-smoothing-stream', function () {
                 expect(true).to.be.false;
             });
 
-            a.on('error', function () {
+            a.on('error', function (error) {
+                expect(error.message).to.equal('not a number: foobar');
                 expect(valueList).to.deep.equal([]);
                 done();
             });
 
             a.write('foobar');
+            a.end();
+        });
+
+        it('should emit an error when a strategy has not yet emitted the initial value and the stream ends', function (done) {
+            var a = new ESS({
+                smoothingFactor: 0.9,
+                initialStrategy: new BlackHoleStrategy()
+            });
+
+            var valueList = [];
+
+            a.on('data', function (data) {
+                valueList.push(data);
+            });
+
+            a.on('end', function () {
+                expect(true).to.be.false;
+            });
+
+            a.on('error', function (error) {
+                expect(error.message).to.equal('there are 5 values left in the queue, nevertheless the stream has ended');
+                expect(valueList).to.deep.equal([]);
+                done();
+            });
+
+            a.write(1);
+            a.write(1);
+            a.write(1);
+            a.write(1);
+            a.write(1);
+
             a.end();
         });
     });
