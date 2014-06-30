@@ -3,7 +3,7 @@ var Transform = require('stream').Transform;
 
 var strategies = require('./lib/strategies');
 
-function ExponentialSmoothingStream (options) {
+function ExponentialSmoothingStream(options) {
     Transform.call(this, {objectMode: true});
 
     options = options || {};
@@ -11,6 +11,8 @@ function ExponentialSmoothingStream (options) {
     this._smoothingFactor = options.smoothingFactor || 1;
     this._initialStrategy = options.initialStrategy || new strategies.InitialStrategyFirst();
     this._currentValue = null;
+
+    this._queue = [];
 }
 
 util.inherits(ExponentialSmoothingStream, Transform);
@@ -21,14 +23,31 @@ ExponentialSmoothingStream.prototype._transform = function (streamValue, enc, ca
     }
 
     if (this._currentValue === null) {
-        this._currentValue = this._initialStrategy.determine(streamValue);
+        this._invokeInitialStrategy(streamValue);
+    } else {
+        this._applyStreamValue(streamValue);
     }
 
+    callback();
+};
+
+ExponentialSmoothingStream.prototype._invokeInitialStrategy = function (streamValue) {
+    var strategyOutput = this._initialStrategy.determine(streamValue);
+
+    if (strategyOutput === null) {
+        this._queue.push(streamValue);
+    } else {
+        this._currentValue = strategyOutput;
+        this.push(strategyOutput);
+
+        this._queue.forEach(this._applyStreamValue.bind(this));
+    }
+};
+
+ExponentialSmoothingStream.prototype._applyStreamValue = function (streamValue) {
     this._currentValue = (this._currentValue * this._smoothingFactor) + ((1 - this._smoothingFactor) * streamValue);
 
     this.push(this._currentValue);
-
-    callback();
 };
 
 ExponentialSmoothingStream.strategies = strategies;

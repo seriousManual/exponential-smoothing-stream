@@ -3,9 +3,17 @@ var expect = require('chai').expect;
 var ESS = require('../ExponentialSmoothingStream');
 var strategies = require('../lib/strategies');
 
+function BufferingStrategy() {
+    this._i = 0;
+}
+
+BufferingStrategy.prototype.determine = function(value) {
+    return this._i++ < 2 ? null : 1;
+};
+
 describe('exponential-smoothing-stream', function () {
     describe('stream', function () {
-        it('should', function (done) {
+        it('should smooth out stream values', function (done) {
             var a = new ESS({
                 smoothingFactor: 0.5
             });
@@ -26,6 +34,32 @@ describe('exponential-smoothing-stream', function () {
 
             a.on('end', function () {
                 expect(valueList).to.deep.equal([2, 2, 2.5, 2.25, 1.625]);
+                done();
+            });
+        });
+
+        it('should queue up values when initial strategy does not return immediately', function (done) {
+            var a = new ESS({
+                smoothingFactor: 0.9,
+                initialStrategy: new BufferingStrategy()
+            });
+
+            var valueList = [];
+
+            a.write(2);
+            a.write(2);
+            a.write(2);
+            a.write(2);
+            a.write(2);
+
+            a.end();
+
+            a.on('data', function (data) {
+                valueList.push(data);
+            });
+
+            a.on('end', function () {
+                expect(valueList).to.deep.equal([1, 1.1, 1.19, 1.271, 1.3438999999999999]);
                 done();
             });
         });
@@ -99,6 +133,17 @@ describe('exponential-smoothing-stream', function () {
                 expect(function () {
                     new strategies.InitialStrategyPercentage(10);
                 }).to.throw();
+            });
+        });
+
+        describe('average', function () {
+            it('should return the average of the first four calls at the fourth call', function () {
+                var a = new strategies.InitialStrategyAverage(4);
+
+                expect(a.determine(1)).to.be.null;
+                expect(a.determine(1)).to.be.null;
+                expect(a.determine(2)).to.be.null;
+                expect(a.determine(2)).to.equal(1.5);
             });
         });
     });

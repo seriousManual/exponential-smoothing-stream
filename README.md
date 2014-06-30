@@ -108,6 +108,20 @@ var a = new ESS({
 });
 ````
 
+#### Average
+
+Uses the first n values and calculates the average which will be used as the initial stream value.
+The stream itself will queue up the stream values until the strategy returns with a valid number.
+
+````javascript
+var ESS = require('exponential-smoothing-stream');
+
+var a = new ESS({
+    smoothingFactor: 0.5,
+    initialStrategy: new ESS.strategies.InitialStrategyAverage(4) //will use the first four elements fromt he stream to determine the average
+});
+````
+
 #### Custom
 
 If you want to specify your own logic simply create a class that follows this interface
@@ -127,6 +141,9 @@ InitialStrategyCustom.prototype.determine = function (value) {
     return value;
 };
 ````
+
+If the call to `determine` returns null the stream will buffer all stream values until `determine` returns a number.
+This allows e.g. for an initial value that's the average of the first four stream elements.
 
 ### Smoothing Factor
 
