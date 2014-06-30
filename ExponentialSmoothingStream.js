@@ -31,7 +31,7 @@ ExponentialSmoothingStream.prototype._transform = function (streamValue, enc, ca
     callback();
 };
 
-ExponentialSmoothingStream.prototype._flush = function(callback) {
+ExponentialSmoothingStream.prototype._flush = function (callback) {
     if (this._queue.length > 0) {
         return this.emit('error', new Error('there are ' + this._queue.length + ' values left in the queue, nevertheless the stream has ended'))
     }

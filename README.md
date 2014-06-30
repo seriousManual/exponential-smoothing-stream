@@ -118,7 +118,7 @@ var ESS = require('exponential-smoothing-stream');
 
 var a = new ESS({
     smoothingFactor: 0.5,
-    initialStrategy: new ESS.strategies.InitialStrategyAverage(4) //will use the first four elements fromt he stream to determine the average
+    initialStrategy: new ESS.strategies.InitialStrategyAverage(4) //will use the first four elements from the stream to determine the average
 });
 ````
 
@@ -142,7 +142,7 @@ InitialStrategyCustom.prototype.determine = function (value) {
 };
 ````
 
-If the call to `determine` returns null the stream will buffer all stream values until `determine` returns a number.
+If the call to `determine` returns `null` the stream will buffer all stream values until `determine` returns a number.
 This allows e.g. for an initial value that's the average of the first four stream elements.
 
 ### Smoothing Factor
