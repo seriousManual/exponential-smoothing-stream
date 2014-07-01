@@ -12,10 +12,7 @@
     "mocha": "^1.19.0",
     "chai": "^1.9.1"
   },
-  "files": [
-    "index.js"
-  ],
-  "main": "./index.js",
+  "main": "./ExponentialSmoothingStream.js",
   "keywords": [
     "exponential smoothing",
     "statistics",
