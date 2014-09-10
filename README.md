@@ -65,7 +65,7 @@ Takes an optional configuration hash that consists of the following elements:
 ### Initial Strategy
 
 The strategy the is used for the first series element is expressed via a Strategy instance.
-Built in there are three different strategies:
+Built in there are four different strategies:
 
 #### First
 
