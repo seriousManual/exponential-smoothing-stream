@@ -178,10 +178,29 @@ describe('exponential-smoothing-stream', function () {
             it('should return the average of the first four calls at the fourth call', function () {
                 var a = new strategies.InitialStrategyAverage(4);
 
-                expect(a.determine(1)).to.be.null;
+                expect(a.determine(2)).to.be.null;
                 expect(a.determine(1)).to.be.null;
                 expect(a.determine(2)).to.be.null;
-                expect(a.determine(2)).to.equal(1.5);
+                expect(a.determine(1)).to.equal(1.5);
+            });
+        });
+
+        describe('median', function () {
+            it('should return the median of the first three calls at the third call', function () {
+                var a = new strategies.InitialStrategyMedian(3);
+
+                expect(a.determine(2)).to.be.null;
+                expect(a.determine(1)).to.be.null;
+                expect(a.determine(2)).to.equal(2);
+            });
+
+            it('should return the median of the first four calls at the fourth call', function () {
+                var a = new strategies.InitialStrategyMedian(4);
+
+                expect(a.determine(1)).to.be.null;
+                expect(a.determine(4)).to.be.null;
+                expect(a.determine(3)).to.be.null;
+                expect(a.determine(2)).to.equal(2.5);
             });
         });
     });
