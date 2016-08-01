@@ -9,7 +9,7 @@
   "license": "MIT",
   "author": "Manuel Ernst <zaphod84@gmx.de>",
   "devDependencies": {
-    "mocha": "^2.5.3",
+    "mocha": "^3.0.0",
     "chai": "^3.5.0"
   },
   "main": "./ExponentialSmoothingStream.js",
