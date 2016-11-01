@@ -1,7 +1,7 @@
 {
   "name": "exponential-smoothing-stream",
   "description": "A transformer stream that applies the exponential smoothing algorithm on each passed item",
-  "version": "1.1.1",
+  "version": "2.0.0",
   "repository": {
     "type": "git",
     "url": "https://github.com/seriousManual/exponential-smoothing-stream.git"
