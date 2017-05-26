@@ -10,7 +10,7 @@
   "author": "Manuel Ernst <zaphod84@gmx.de>",
   "devDependencies": {
     "mocha": "^3.0.0",
-    "chai": "^3.5.0"
+    "chai": "^4.0.0"
   },
   "main": "./ExponentialSmoothingStream.js",
   "keywords": [
